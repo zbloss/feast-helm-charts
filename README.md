@@ -1,5 +1,17 @@
 # Feast Helm Charts
 
+This repo contains all Feast Helm charts and their configuration parameters.
+
+This repository contains multiple Helm charts. 
+* Feast: The complete Helm chart containing all Feast components and dependencies. Most users will use this chart.
+    * Feast Core: The Feast Core (Registry) Helm chart only.
+    * Feast Serving: The Feast Serving Helm chart only. For teams that only want to install Feast Serving to serve features online.
+    * Feast Jupyter: The Feast Jupyter Helm chart. This helm chart installs a Jupyter notebook into a cluster which has Feast dependencies pre-installed.
+    * Feast Job Service: The Feast Job Service Helm chart. This chart installs the Feast Job Service which allows for the automatic management and execution of jobs.
+    * Redis: (Dependency) Used as an online store by Feast Serving
+    * Postgres: (Dependency) Used as a backend to Feast Core. Feature definitions are stored in Postgres.
+    * Optional Dependencies: The wrapping Feast chart also contains Grafana, Prometheus, Statsd-exporter, and Kafka as dependencies. These sub charts are for convenience only. They are not required for Feast to function.
+
 ## Chart: Feast
 
 Feature store for machine learning. Current chart version is `0.9.2`
