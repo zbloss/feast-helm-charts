@@ -1,4 +1,10 @@
 apiVersion: v1
-description: Feast Job Service manage ingestion jobs.
+description: "Feast Job Service: Job manager for Feast"
 name: feast-jobservice
 version: 0.9.2
+appVersion: v0.9.2
+keywords:
+- machine learning
+- big data
+- mlops
+home: https://github.com/feast-dev/feast

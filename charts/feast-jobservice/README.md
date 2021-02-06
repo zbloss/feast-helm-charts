@@ -1,10 +1,10 @@
 feast-jobservice
 ================
-Feast Job Service manage ingestion jobs.
+Feast Job Service: Job manager for Feast
 
 Current chart version is `0.9.2`
 
-
+Source code can be found [here](https://github.com/feast-dev/feast)
 
 
 

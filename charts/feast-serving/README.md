@@ -1,10 +1,10 @@
 feast-serving
 =============
-Feast Serving serves low-latency latest features and historical batch features.
+Feast Serving: Online feature serving service for Feast
 
 Current chart version is `0.9.2`
 
-
+Source code can be found [here](https://github.com/feast-dev/feast-java)
 
 
 
