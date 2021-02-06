@@ -2,7 +2,7 @@
 
 This repo contains all Feast Helm charts and their configuration parameters.
 
-This repository contains multiple Helm charts. 
+This repository contains multiple Helm charts.
 * Feast: The complete Helm chart containing all Feast components and dependencies. Most users will use this chart.
     * Feast Core: The Feast Core (Registry) Helm chart only.
     * Feast Serving: The Feast Serving Helm chart only. For teams that only want to install Feast Serving to serve features online.
