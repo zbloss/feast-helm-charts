@@ -54,6 +54,7 @@ Current chart version is `0.9.2`
 | readinessProbe.timeoutSeconds | int | `10` | When the probe times out |
 | replicaCount | int | `1` | Number of pods that will be created |
 | resources | object | `{}` | CPU/memory [resource requests/limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) |
+| secrets | list | `[]` | Arbitrary secrets to mount on the job service pod, on /etc/secrets/<secret name> |
 | service.grpc.nodePort | string | `nil` | Port number that each cluster node will listen to |
 | service.grpc.port | int | `6568` | Service port for GRPC requests |
 | service.grpc.targetPort | int | `6568` | Container port serving GRPC requests |
@@ -61,3 +62,5 @@ Current chart version is `0.9.2`
 | service.http.port | int | `80` | Service port for HTTP requests |
 | service.http.targetPort | int | `8080` | Container port serving HTTP requests and Prometheus metrics |
 | service.type | string | `"ClusterIP"` | Kubernetes service type |
+| sparkOperator.enabled | bool | `false` | Flag to create and mount custom job template on the jobservice deployment as configmap |
+| sparkOperator.jobTemplate | object | `{}` | Content of the job template, in yaml format |
