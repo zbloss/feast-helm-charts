@@ -14,16 +14,18 @@ else
   echo 'No "develop" tags found, continuing';
 fi
 
-# Should have no "gcr" images
-grep -R "gcr.io" "$PROJECT_ROOT_DIR"/infra/charts || true
-COUNT=$(grep -R "gcr.io" "$PROJECT_ROOT_DIR"/infra/charts | wc -l)
+# TODO: Enable DockerHub vs GCR checks asap.
 
-if [ "$COUNT" -gt 0 ]; then
-  echo 'Found more than one instance of "gcr.io" in charts. Please replace with https://hub.docker.com/r/feastdev feast image.';
-  exit 1
-else
-  echo 'No "gcr.io" instances found, continuing';
-fi
+## Should have no "gcr" images
+#grep -R "gcr.io" "$PROJECT_ROOT_DIR"/infra/charts || true
+#COUNT=$(grep -R "gcr.io" "$PROJECT_ROOT_DIR"/infra/charts | wc -l)
+#
+#if [ "$COUNT" -gt 0 ]; then
+#  echo 'Found more than one instance of "gcr.io" in charts. Please replace with https://hub.docker.com/r/feastdev feast image.';
+#  exit 1
+#else
+#  echo 'No "gcr.io" instances found, continuing';
+#fi
 
 # Should have no "SNAPSHOT" versions
 grep -R "SNAPSHOT" "$PROJECT_ROOT_DIR"/infra/charts || true
