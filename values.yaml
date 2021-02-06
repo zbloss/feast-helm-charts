@@ -11,7 +11,7 @@ feast-online-serving:
 
 feast-jupyter:
   # feast-jupyter.enabled -- Flag to install Feast Jupyter Notebook with SDK
-  enabled: false
+  enabled: true
 
 feast-jobservice:
   # feast-jobservice.enabled -- Flag to install Feast Job Service

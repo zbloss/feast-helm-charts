@@ -45,7 +45,7 @@ https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
 | feast-core.enabled | bool | `true` | Flag to install Feast Core |
 | feast-core.postgresql.existingSecret | string | `"feast-postgresql"` | Kubernetes secrets that contains the postgresql password |
 | feast-jobservice.enabled | bool | `true` | Flag to install Feast Job Service |
-| feast-jupyter.enabled | bool | `false` | Flag to install Feast Jupyter Notebook with SDK |
+| feast-jupyter.enabled | bool | `true` | Flag to install Feast Jupyter Notebook with SDK |
 | feast-online-serving.enabled | bool | `true` | Flag to install Feast Online Serving |
 | grafana.enabled | bool | `false` | Flag to install Grafana |
 | kafka.enabled | bool | `false` | Flag to install Kafka |
