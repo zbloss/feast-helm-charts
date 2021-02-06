@@ -25,5 +25,5 @@ jobs:
         run: ./scripts/install-helm.sh
       - name: Validate Helm chart prior to publishing
         run: ./scripts/validate-helm-charts-publish.sh
-      - name: Publish Helm charts
-        run: ./scripts/push-helm-charts.sh
+#      - name: Publish Helm charts
+#        run: ./scripts/push-helm-charts.sh
