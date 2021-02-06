@@ -1,5 +1,7 @@
-feast
-===== 
+# Feast Helm Charts
+
+## Chart: feast
+=====
 
 Feature store for machine learning. Current chart version is `0.9.2`
 
@@ -39,10 +41,3 @@ https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
 | prometheus.enabled | bool | `true` | Flag to install Prometheus |
 | redis.enabled | bool | `true` | Flag to install Redis |
 | redis.usePassword | bool | `false` | Disable redis password |
-
-
-### Documentation development
-
-This `README.md` is generated using [helm-docs](https://github.com/norwoodj/helm-docs/).
-Please run `helm-docs` to regenerate the `README.md` every time `README.md.gotmpl`
-or `values.yaml` are updated.
