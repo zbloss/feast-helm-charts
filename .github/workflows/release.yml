@@ -19,13 +19,11 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
       - run: gcloud auth configure-docker --quiet
-      - name: Validate repository versions
-        run: make lint-versions
-      - name: Validate chart release versions
-        run: ./scripts/validate-helm-chart-docker-image.sh
       - name: Remove previous Helm
         run: sudo rm -rf $(which helm)
       - name: Install Helm
         run: ./scripts/install-helm.sh
+      - name: Validate Helm chart prior to publishing
+        run: ./scripts/validate-helm-charts-publish.sh
       - name: Publish Helm charts
-        run: ./scripts/sync-helm-charts.sh
+        run: ./scripts/push-helm-charts.sh
