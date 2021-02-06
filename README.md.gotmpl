@@ -3,14 +3,17 @@
 This repo contains all Feast Helm charts and their configuration options.
 
 This repository contains multiple Helm charts.
-* Feast: The complete Helm chart containing all Feast components and dependencies. Most users will use this chart.
-    * Feast Core: The Feast Core (Registry) Helm chart only.
-    * Feast Serving: The Feast Serving Helm chart only. For teams that only want to install Feast Serving to serve features online.
-    * Feast Jupyter: The Feast Jupyter Helm chart. This helm chart installs a Jupyter notebook into a cluster which has Feast dependencies pre-installed.
-    * Feast Job Service: The Feast Job Service Helm chart. This chart installs the Feast Job Service which allows for the automatic management and execution of jobs.
+* Feast (root chart): The complete Helm chart containing all Feast components and dependencies. Most users will use this chart.
+    * [Feast Core](charts/feast-core): The Feast Core (Registry) Helm chart only.
+    * [Feast Serving](charts/feast-serving): The Feast Serving Helm chart only. For teams that only want to install Feast Serving to serve features online.
+    * [Feast Job Service](charts/feast-jobservice): The Feast Job Service Helm chart. This chart installs the Feast Job Service which allows for the automatic management and execution of jobs.
+    * [Feast Jupyter](charts/feast-jupyter) (Optional): The Feast Jupyter Helm chart. This chart is not required to use Feast. The Helm chart installs a Jupyter notebook into a cluster which has Feast dependencies pre-installed.
     * Redis: (Dependency) Used as an online store by Feast Serving
     * Postgres: (Dependency) Used as a backend to Feast Core. Feature definitions are stored in Postgres.
-    * Optional Dependencies: The wrapping Feast chart also contains Grafana, Prometheus, Statsd-exporter, and Kafka as dependencies. These sub charts are for convenience only. They are not required for Feast to function.
+    * Kafka (Optional): Kafka Helm chart. Not a dependency. Only added for convenience and for use in tutorials
+    * Prometheus (Optional): Prometheus Helm chart. Not a dependency. Only provided for convenient.
+    * Statsd Exporter (Optional): Statsd Exporter Helm chart. Used as exporter in order to publish metrics for Prometheus.
+    * Grafana (Optional): Grafana Helm chart. Not a dependency. Only provided for convenience in order to visualize Prometheus metrics.
 
 ## Chart: Feast
 
