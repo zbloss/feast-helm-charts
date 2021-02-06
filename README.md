@@ -1,6 +1,6 @@
 # Feast Helm Charts
 
-This repo contains all Feast Helm charts and their configuration parameters.
+This repo contains all Feast Helm charts and their configuration options.
 
 This repository contains multiple Helm charts.
 * Feast: The complete Helm chart containing all Feast components and dependencies. Most users will use this chart.
