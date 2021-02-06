@@ -1,0 +1,31 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish-helm-charts:
+    runs-on:  ubuntu-latest
+    env:
+      HELM_VERSION: v2.17.0
+    steps:
+      - uses: actions/checkout@v2
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          export_default_credentials: true
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+      - run: gcloud auth configure-docker --quiet
+      - name: Validate repository versions
+        run: make lint-versions
+      - name: Validate chart release versions
+        run: ./scripts/validate-helm-chart-docker-image.sh
+      - name: Remove previous Helm
+        run: sudo rm -rf $(which helm)
+      - name: Install Helm
+        run: ./scripts/install-helm.sh
+      - name: Publish Helm charts
+        run: ./scripts/sync-helm-charts.sh
