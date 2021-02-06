@@ -3,7 +3,7 @@
 This repo contains all Feast Helm charts and their configuration options.
 
 This repository contains multiple Helm charts.
-* Feast (root chart): The complete Helm chart containing all Feast components and dependencies. Most users will use this chart.
+* Feast (root chart): The complete Helm chart containing all Feast components and dependencies. Most users will use this chart, but can selectively enable/disable subcharts using the values.yaml file.
     * [Feast Core](charts/feast-core): The Feast Core (Registry) Helm chart only.
     * [Feast Serving](charts/feast-serving): The Feast Serving Helm chart only. For teams that only want to install Feast Serving to serve features online.
     * [Feast Job Service](charts/feast-jobservice): The Feast Job Service Helm chart. This chart installs the Feast Job Service which allows for the automatic management and execution of jobs.
