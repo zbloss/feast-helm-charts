@@ -1,7 +1,6 @@
 # Feast Helm Charts
 
-## Chart: feast
-=====
+## Chart: Feast
 
 Feature store for machine learning. Current chart version is `0.9.2`
 
