@@ -11,7 +11,7 @@ feast-online-serving:
 
 feast-jupyter:
   # feast-jupyter.enabled -- Flag to install Feast Jupyter Notebook with SDK
-  enabled: true
+  enabled: false
 
 feast-jobservice:
   # feast-jobservice.enabled -- Flag to install Feast Job Service
@@ -25,7 +25,7 @@ postgresql:
 
 kafka:
   # kafka.enabled -- Flag to install Kafka
-  enabled: true
+  enabled: false
 
 redis:
   # redis.enabled -- Flag to install Redis
@@ -35,12 +35,12 @@ redis:
 
 prometheus-statsd-exporter:
   # prometheus-statsd-exporter.enabled -- Flag to install StatsD to Prometheus Exporter
-  enabled: true
+  enabled: false
 
 prometheus:
   # prometheus.enabled -- Flag to install Prometheus
-  enabled: true
+  enabled: false
 
 grafana:
   # grafana.enabled -- Flag to install Grafana
-  enabled: true
+  enabled: false
