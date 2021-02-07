@@ -6,6 +6,32 @@ on:
       - 'v*.*.*'
 
 jobs:
+
+  get-version:
+    runs-on:  ubuntu-latest
+    outputs:
+      release_version: ${{ steps.get_release_version.outputs.release_version }}
+      version_without_prefix: ${{ steps.get_release_version_without_prefix.outputs.version_without_prefix }}
+      highest_semver_tag: ${{ steps.get_highest_semver.outputs.highest_semver_tag }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get release version
+        id: get_release_version
+        run: echo ::set-output name=release_version::${GITHUB_REF#refs/*/}
+      - name: Get release version without prefix
+        id: get_release_version_without_prefix
+        env:
+          RELEASE_VERSION: ${{ steps.get_release_version.outputs.release_version }}
+        run: |
+          echo ::set-output name=version_without_prefix::${RELEASE_VERSION:1}
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.get_release_version.outputs.release_version }}
+          VERSION_WITHOUT_PREFIX: ${{ steps.get_release_version_without_prefix.outputs.version_without_prefix }}
+        run: |
+          echo $RELEASE_VERSION
+          echo $VERSION_WITHOUT_PREFIX
+
   publish-helm-charts:
     runs-on:  ubuntu-latest
     env:
@@ -25,5 +51,7 @@ jobs:
         run: ./scripts/install-helm.sh
       - name: Validate Helm chart prior to publishing
         run: ./scripts/validate-helm-chart-publish.sh
+      - name: Validate all version consistency
+        run: ./scripts/validate-helm-chart-versions.sh ${VERSION_WITHOUT_PREFIX}
 #      - name: Publish Helm charts
 #        run: ./scripts/push-helm-charts.sh
