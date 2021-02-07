@@ -16,11 +16,6 @@ PROJECT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
 echo "Finding how many versions have been set to ${1} in the current repository"
 
-# The following versions have been detected
-echo
-grep -R --exclude-dir='.*' ${1} ${PROJECT_ROOT_DIR}
-echo
-
 CHANGED_VERSIONS_COUNT=$(grep -R --exclude-dir='.*' ${1} ${PROJECT_ROOT_DIR} | wc -l)
 echo "Found ${CHANGED_VERSIONS_COUNT} versions that have been changed"
 
@@ -31,6 +26,12 @@ if [ $UNIQUE_VERSIONS_COUNT -ne "${CHANGED_VERSIONS_COUNT}" ]; then
     echo "Please confirm that all versions in all charts and requirements files have been bumped to the tagged release version. If you have successfully bumped all versions and there is still a mismatch in the expected and actual counts, then rerun the following command"
     echo "grep -R 'insert_your_semver_version_here' . | wc -l"
     echo "and update the script scripts/validate-helm-chart-versions.sh"
+    echo
+    echo For your reference, the following lines were detected as changed
+    echo
+    set -ex
+    grep -R --exclude-dir='.*' ${1} ${PROJECT_ROOT_DIR}
+    echo
     exit 1
 fi
 
