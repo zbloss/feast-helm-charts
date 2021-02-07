@@ -29,8 +29,7 @@ if [ $UNIQUE_VERSIONS_COUNT -ne "${CHANGED_VERSIONS_COUNT}" ]; then
     echo
     echo For your reference, the following lines were detected as changed
     echo
-    set -ex
-    grep -R --exclude-dir='.*' ${1} ${PROJECT_ROOT_DIR}
+    grep -R --exclude-dir='.*' ${1} ${PROJECT_ROOT_DIR} || true
     echo
     exit 1
 fi
