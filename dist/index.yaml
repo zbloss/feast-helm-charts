@@ -3,7 +3,7 @@ entries:
   feast:
   - apiVersion: v1
     appVersion: v0.9.2
-    created: "2021-02-15T09:31:06.105338613-08:00"
+    created: "2021-02-15T09:39:26.34946604-08:00"
     dependencies:
     - condition: feast-core.enabled
       name: feast-core
@@ -58,6 +58,6 @@ entries:
     - https://github.com/feast-dev/feast
     - https://github.com/feast-dev/feast-helm-charts
     urls:
-    - feast-0.100.0.tgz
+    - charts.feast.dev/feast-0.100.0.tgz
     version: 0.100.0
-generated: "2021-02-15T09:31:06.086107091-08:00"
+generated: "2021-02-15T09:39:26.329867529-08:00"
