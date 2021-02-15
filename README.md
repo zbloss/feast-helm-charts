@@ -17,11 +17,30 @@ This repository contains multiple Helm charts.
 
 ## Chart: Feast
 
-Feature store for machine learning. Current chart version is `0.9.2`
+Feature store for machine learning. Current chart version is `0.100.0`
 
 ## Installation
 
-https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
+Charts are published to `https://feast-helm-charts.storage.googleapis.com`. Please note that this URL is different from the URL we previously used (`feast-charts`)
+
+Run the following commands to add the repository
+
+```
+helm repo add feast-charts https://feast-helm-charts.storage.googleapis.com
+helm repo update
+```
+
+Make sure to create a Postgres secret prior to installation
+```
+kubectl create secret generic feast-postgresql --from-literal=postgresql-password=password
+```
+
+Install Feast
+```
+helm install feast-release feast-charts/feast
+```
+
+For more details, please see: https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
 
 ## Chart Requirements
 
