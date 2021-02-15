@@ -57,4 +57,4 @@ jobs:
           VERSION_WITHOUT_PREFIX: ${{ needs.get-version.outputs.version_without_prefix }}
         run: ./scripts/validate-helm-chart-versions.sh $VERSION_WITHOUT_PREFIX
       - name: Publish Helm charts
-        run: ./scripts/push-helm-charts.sh
+        run: ./scripts/push-helm-charts.sh $VERSION_WITHOUT_PREFIX

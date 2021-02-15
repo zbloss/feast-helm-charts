@@ -1,59 +1,19 @@
 #!/usr/bin/env bash
 
-# Script to sync local charts to remote helm repository in Google Cloud Storage
-# Copied from: https://github.com/helm/charts/blob/master/test/repo-sync.sh
+set -e
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
-log_error() {
-    printf '\e[31mERROR: %s\n\e[39m' "$1" >&2
-}
-
-# Assume working directory is Feast repository root folder
-repo_dir=infra/charts
-bucket=gs://feast-charts
-repo_url=https://feast-charts.storage.googleapis.com/
-sync_dir=/tmp/syncdir
-index_dir=/tmp/indexdir
-
-rm -rf $sync_dir $index_dir
-
-echo "Syncing repo '$repo_dir'..."
-
-mkdir -p "$sync_dir"
-if ! gsutil cp "$bucket/index.yaml" "$index_dir/index.yaml"; then
-    log_error "Exiting because unable to copy index locally. Not safe to proceed."
+if [ $# -ne 1 ]; then
+    echo "Please provide a single semver version (without a \"v\" prefix) to test the repository against, e.g 0.100.0"
     exit 1
 fi
 
-exit_code=0
+bucket=gs://feast-helm-charts
+repo_url=https://feast-helm-charts.storage.googleapis.com/
 
-helm repo add bitnami https://charts.bitnami.com/bitnami
+helm plugin install https://github.com/hayorov/helm-gcs.git || true
 
-for dir in "$repo_dir"/*; do
-    if  helm dep update "$dir" && helm dep build "$dir"; then
-        helm package --destination "$sync_dir" "$dir"
-    else
-        log_error "Problem building dependencies. Skipping packaging of '$dir'."
-        exit_code=1
-    fi
-done
+helm repo add feast-helm-chart-repo $bucket
 
-if helm repo index --url "$repo_url" --merge "$index_dir/index.yaml" "$sync_dir"; then
-    # Move updated index.yaml to sync folder so we don't push the old one again
-    mv -f "$sync_dir/index.yaml" "$index_dir/index.yaml"
+helm package .
 
-    gsutil -m rsync "$sync_dir" "$bucket"
-
-    # Make sure index.yaml is synced last
-    gsutil -h "Cache-Control:no-cache,max-age=0" cp "$index_dir/index.yaml" "$bucket"
-else
-    log_error "Exiting because unable to update index. Not safe to push update."
-    exit 1
-fi
-
-ls -l "$sync_dir"
-
-exit "$exit_code"
+helm gcs push feast-${1}.tgz feast-helm-chart-repo --force

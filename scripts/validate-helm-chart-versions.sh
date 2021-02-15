@@ -6,7 +6,7 @@ set -e
 UNIQUE_VERSIONS_COUNT=27
 
 if [ $# -ne 1 ]; then
-    echo "Please provide a single semver version (without a \"v\" prefix) to test the repository against, e.g 0.9.2"
+    echo "Please provide a single semver version (without a \"v\" prefix) to test the repository against, e.g 0.100.0"
     exit 1
 fi
 
