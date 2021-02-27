@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "feast-jupyter.fullname" . }}
+  name: {{ template "chart.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "feast-jupyter.name" . }}
+    app: {{ template "chart.name" . }}
     component: jupyter
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
@@ -13,13 +13,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "feast-jupyter.name" . }}
+      app: {{ template "chart.name" . }}
       component: jupyter
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "feast-jupyter.name" . }}
+        app: {{ template "chart.name" . }}
         component: jupyter
         release: {{ .Release.Name }}
     spec:
@@ -29,7 +29,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
           {{- if .Values.gcpServiceAccount.enabled }}
-          - name: {{ template "feast-jupyter.fullname" . }}-gcp-service-account
+          - name: {{ template "chart.fullname" . }}-gcp-service-account
             mountPath: /etc/secrets/google
             readOnly: true
           {{- end }}
@@ -40,6 +40,14 @@ spec:
               value: "{{ .Release.Name }}-feast-online-serving:6566"
             - name: FEAST_HISTORICAL_SERVING_URL
               value: "{{ .Release.Name }}-feast-batch-serving:6566"
+            - name: FEAST_HISTORICAL_FEATURE_OUTPUT_LOCATION
+              value: "file:///home/jovyan/historical_feature_output"
+            - name: FEAST_SPARK_STAGING_LOCATION
+              value: "file:///home/jovyan/spark_staging_location"
+            - name: FEAST_REDIS_HOST
+              value: "{{ .Release.Name }}-redis-master"
+            - name: DEMO_KAFKA_BROKERS
+              value: "{{ .Release.Name }}-kafka:9092"
             {{- if .Values.gcpServiceAccount.enabled }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /etc/secrets/google/{{ .Values.gcpServiceAccount.existingSecret.key }}
@@ -58,7 +66,7 @@ spec:
               containerPort: 8888
       volumes:
       {{- if .Values.gcpServiceAccount.enabled }}
-      - name: {{ template "feast-jupyter.fullname" . }}-gcp-service-account
+      - name: {{ template "chart.fullname" . }}-gcp-service-account
         secret:
           secretName: {{ .Values.gcpServiceAccount.existingSecret.name }}
       {{- end }}
