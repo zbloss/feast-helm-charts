@@ -17,7 +17,7 @@ This repository contains multiple Helm charts.
 
 ## Chart: Feast
 
-Feature store for machine learning Current chart version is `0.100.1`
+Feature store for machine learning Current chart version is `0.100.2`
 
 ## Installation
 
