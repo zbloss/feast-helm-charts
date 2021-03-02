@@ -15,7 +15,7 @@ helm plugin install https://github.com/hayorov/helm-gcs.git  --version 0.2.2  ||
 helm repo add feast-helm-chart-repo $bucket
 
 mkdir -p feast
-cp -R * feast/
+cp -R * feast/ || true
 
 helm package feast
 
