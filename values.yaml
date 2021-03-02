@@ -4,17 +4,29 @@ feast-core:
   postgresql:
     # feast-core.postgresql.existingSecret -- Kubernetes secrets that contains the postgresql password
     existingSecret: feast-postgresql
+  image:
+    repository: gcr.io/kf-feast/feast-core
+    tag: develop
 
-feast-online-serving:
+feast-serving:
   # feast-online-serving.enabled -- Flag to install Feast Online Serving
   enabled: true
+  image:
+    repository: gcr.io/kf-feast/feast-serving
+    tag: develop
 
 feast-jupyter:
   # feast-jupyter.enabled -- Flag to install Feast Jupyter Notebook with SDK
   enabled: true
+  image:
+    repository: gcr.io/kf-feast/feast-jupyter
+    tag: develop
 
 feast-jobservice:
   # feast-jobservice.enabled -- Flag to install Feast Job Service
+  image:
+    repository: gcr.io/kf-feast/feast-jobservice
+    tag: develop
   enabled: true
 
 postgresql:
@@ -25,22 +37,10 @@ postgresql:
 
 kafka:
   # kafka.enabled -- Flag to install Kafka
-  enabled: false
+  enabled: true
 
 redis:
   # redis.enabled -- Flag to install Redis
   enabled: true
   # redis.usePassword -- Disable redis password
   usePassword: false
-
-prometheus-statsd-exporter:
-  # prometheus-statsd-exporter.enabled -- Flag to install StatsD to Prometheus Exporter
-  enabled: false
-
-prometheus:
-  # prometheus.enabled -- Flag to install Prometheus
-  enabled: false
-
-grafana:
-  # grafana.enabled -- Flag to install Grafana
-  enabled: false

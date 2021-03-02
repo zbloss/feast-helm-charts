@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "chart.fullname" . }}
+  name: {{ template "feast-jupyter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "chart.name" . }}
+    app: {{ template "feast-jupyter.name" . }}
     component: jupyter
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
@@ -13,13 +13,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "chart.name" . }}
+      app: {{ template "feast-jupyter.name" . }}
       component: jupyter
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "chart.name" . }}
+        app: {{ template "feast-jupyter.name" . }}
         component: jupyter
         release: {{ .Release.Name }}
     spec:
@@ -37,7 +37,7 @@ spec:
             - name: FEAST_CORE_URL
               value: "{{ .Release.Name }}-feast-core:6565"
             - name: FEAST_SERVING_URL
-              value: "{{ .Release.Name }}-feast-online-serving:6566"
+              value: "{{ .Release.Name }}-feast-serving:6566"
             - name: FEAST_HISTORICAL_SERVING_URL
               value: "{{ .Release.Name }}-feast-batch-serving:6566"
             - name: FEAST_HISTORICAL_FEATURE_OUTPUT_LOCATION
@@ -66,7 +66,7 @@ spec:
               containerPort: 8888
       volumes:
       {{- if .Values.gcpServiceAccount.enabled }}
-      - name: {{ template "chart.fullname" . }}-gcp-service-account
+      - name: {{ template "feast-jupyter.fullname" . }}-gcp-service-account
         secret:
           secretName: {{ .Values.gcpServiceAccount.existingSecret.name }}
       {{- end }}
