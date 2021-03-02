@@ -37,6 +37,7 @@ jobs:
     needs: get-version
     env:
       HELM_VERSION: v2.17.0
+      VERSION_WITHOUT_PREFIX: ${{ needs.get-version.outputs.version_without_prefix }}
     steps:
       - uses: actions/checkout@v2
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -53,8 +54,6 @@ jobs:
       - name: Validate Helm chart prior to publishing
         run: ./scripts/validate-helm-chart-publish.sh
       - name: Validate all version consistency
-        env:
-          VERSION_WITHOUT_PREFIX: ${{ needs.get-version.outputs.version_without_prefix }}
         run: ./scripts/validate-helm-chart-versions.sh $VERSION_WITHOUT_PREFIX
       - name: Publish Helm charts
         run: ./scripts/push-helm-charts.sh $VERSION_WITHOUT_PREFIX
