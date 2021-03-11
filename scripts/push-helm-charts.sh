@@ -19,4 +19,4 @@ cp -R * feast/ || true
 
 helm package feast
 
-helm gcs push feast-${1}.tgz feast-helm-chart-repo --force
+helm gcs push --public feast-${1}.tgz feast-helm-chart-repo --force
