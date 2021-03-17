@@ -11,6 +11,9 @@ This repository contains multiple Helm charts.
     * Redis: (Dependency) Used as an online store by Feast Serving
     * Postgres: (Dependency) Used as a backend to Feast Core. Feature definitions are stored in Postgres.
     * Kafka (Optional): Kafka Helm chart. Not a dependency. Only added for convenience and for use in tutorials
+    * Prometheus (Optional): Prometheus Helm chart. Not a dependency. Only provided for convenient.
+    * Statsd Exporter (Optional): Statsd Exporter Helm chart. Used as exporter in order to publish metrics for Prometheus.
+    * Grafana (Optional): Grafana Helm chart. Not a dependency. Only provided for convenience in order to visualize Prometheus metrics.
 
 ## Chart: Feast
 
@@ -36,6 +39,25 @@ Install Feast
 ```
 helm install feast-release feast-charts/feast
 ```
+
+## Customize your installation
+
+This Feast chart comes with a [values.yaml](values.yaml) that allows for configuration and customization of all sub-charts.
+
+In order to modify the default configuration of Feast Core and Feast Serving, please use the `application-override.yaml` key in the `values.yaml` file in this chart. A code snippet example
+```
+feast-core
+ application-override.yaml:
+    enabled: true
+    spring:
+        datasource:
+          driverClassName: org.postgresql.Driver
+          url: jdbc:postgresql://postgres-prod-postgresql.default.svc.cluster.local:5432/feast
+          username: postgres
+          password: <password>
+```
+
+For the default configuration of these two services, please see the [Feast Core configuration](https://github.com/feast-dev/feast-java/blob/master/core/src/main/resources/application.yml) and [Feast Serving Configuration](https://github.com/feast-dev/feast-java/blob/master/serving/src/main/resources/application.yml).
 
 For more details, please see: https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
 

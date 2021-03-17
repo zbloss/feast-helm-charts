@@ -40,6 +40,25 @@ Install Feast
 helm install feast-release feast-charts/feast
 ```
 
+## Customize your installation
+
+This Feast chart comes with a [values.yaml](values.yaml) that allows for configuration and customization of all sub-charts.
+
+In order to modify the default configuration of Feast Core and Feast Serving, please use the `application-override.yaml` key in the `values.yaml` file in this chart. A code snippet example
+```
+feast-core
+ application-override.yaml:
+    enabled: true
+    spring:
+        datasource:
+          driverClassName: org.postgresql.Driver
+          url: jdbc:postgresql://postgres-prod-postgresql.default.svc.cluster.local:5432/feast
+          username: postgres
+          password: <password>
+```
+
+For the default configuration of these two services, please see the [Feast Core configuration](https://github.com/feast-dev/feast-java/blob/master/core/src/main/resources/application.yml) and [Feast Serving Configuration](https://github.com/feast-dev/feast-java/blob/master/serving/src/main/resources/application.yml).
+
 For more details, please see: https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
 
 {{ template "chart.requirementsSection" . }}
