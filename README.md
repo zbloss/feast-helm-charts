@@ -11,9 +11,6 @@ This repository contains multiple Helm charts.
     * Redis: (Dependency) Used as an online store by Feast Serving
     * Postgres: (Dependency) Used as a backend to Feast Core. Feature definitions are stored in Postgres.
     * Kafka (Optional): Kafka Helm chart. Not a dependency. Only added for convenience and for use in tutorials
-    * Prometheus (Optional): Prometheus Helm chart. Not a dependency. Only provided for convenient.
-    * Statsd Exporter (Optional): Statsd Exporter Helm chart. Used as exporter in order to publish metrics for Prometheus.
-    * Grafana (Optional): Grafana Helm chart. Not a dependency. Only provided for convenience in order to visualize Prometheus metrics.
 
 ## Chart: Feast
 
