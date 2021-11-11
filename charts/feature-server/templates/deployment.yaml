@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "feast-serving.fullname" . }}
+  name: {{ template "feature-server.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "feast-serving.name" . }}
+    app: {{ template "feature-server.name" . }}
     component: serving
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
@@ -13,7 +13,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "feast-serving.name" . }}
+      app: {{ template "feature-server.name" . }}
       component: serving
       release: {{ .Release.Name }}
   template:
@@ -21,13 +21,8 @@ spec:
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-      {{- if .Values.prometheus.enabled }}
-        prometheus.io/path: /metrics
-        prometheus.io/port: "{{ .Values.service.http.targetPort }}"
-        prometheus.io/scrape: "true"
-      {{- end }}
       labels:
-        app: {{ template "feast-serving.name" . }}
+        app: {{ template "feature-server.name" . }}
         component: serving
         release: {{ .Release.Name }}
       {{- if .Values.podLabels }}
@@ -40,12 +35,12 @@ spec:
       {{- end }}
 
       volumes:
-      - name: {{ template "feast-serving.fullname" . }}-config
+      - name: {{ template "feature-server.fullname" . }}-config
         configMap:
-          name: {{ template "feast-serving.fullname" . }}
-      - name: {{ template "feast-serving.fullname" . }}-secret
+          name: {{ template "feature-server.fullname" . }}
+      - name: {{ template "feature-server.fullname" . }}-secret
         secret:
-          secretName: {{ template "feast-serving.fullname" . }}
+          secretName: {{ template "feature-server.fullname" . }}
       {{- range $secret := .Values.secrets }}
       - name: {{ $secret }}
         secret:
@@ -58,9 +53,9 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
 
         volumeMounts:
-        - name: {{ template "feast-serving.fullname" . }}-config
+        - name: {{ template "feature-server.fullname" . }}-config
           mountPath: /etc/feast
-        - name: {{ template "feast-serving.fullname" . }}-secret
+        - name: {{ template "feature-server.fullname" . }}-secret
           mountPath: /etc/secrets/feast
           readOnly: true
         {{- range $secret := .Values.secrets }}

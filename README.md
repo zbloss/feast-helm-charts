@@ -1,17 +1,13 @@
 # Feast Helm Charts
 
-This repo contains all Feast Helm charts and their configuration options.
+> :warning: **Disclaimer**: Since Feast 0.10 our vision is to manage all infrastructure for feature store from one place - Feast SDK. But while this new paradigm is still in development, we are planning to support the installation of some Feast components (like Java feature server) through Helm chart presented in this repository. However, we do not expect helm chart to become a long-term solution for deploying Feast components to production, and some frictions still might exist. For example, you will need to manually sync some configurations from [feature_store.yaml](https://docs.feast.dev/reference/feature-repository/feature-store-yaml) into the chart context (like path to the registry file or project name).
 
-This repository contains multiple Helm charts.
+This repo contains Helm charts for Feast components that are being installed on Kubernetes:
 * Feast (root chart): The complete Helm chart containing all Feast components and dependencies. Most users will use this chart, but can selectively enable/disable subcharts using the values.yaml file.
-    * [Feast Core](charts/feast-core): The Feast Core (Registry) Helm chart only.
-    * [Feast Serving](charts/feast-serving): The Feast Serving Helm chart only. For teams that only want to install Feast Serving to serve features online.
-    * [Feast Job Service](charts/feast-jobservice): The Feast Job Service Helm chart. This chart installs the Feast Job Service which allows for the automatic management and execution of jobs.
-    * [Feast Jupyter](charts/feast-jupyter) (Optional): The Feast Jupyter Helm chart. This chart is not required to use Feast. The Helm chart installs a Jupyter notebook into a cluster which has Feast dependencies pre-installed.
-    * Redis: (Dependency) Used as an online store by Feast Serving
-    * Postgres: (Dependency) Used as a backend to Feast Core. Feature definitions are stored in Postgres.
-    * Kafka (Optional): Kafka Helm chart. Not a dependency. Only added for convenience and for use in tutorials
-
+    * [Feature Server](charts/feature-server): High performant JVM-based implementation of feature server.
+    * [Transformation Service](charts/transformation-service): Transformation server for calculating on-demand features
+    * Redis: (Optional) One of possible options for an online store used by Feature Server
+   
 ## Chart: Feast
 
 Feature store for machine learning Current chart version is `0.100.4`
@@ -27,11 +23,6 @@ helm repo add feast-charts https://feast-helm-charts.storage.googleapis.com
 helm repo update
 ```
 
-Make sure to create a Postgres secret prior to installation
-```
-kubectl create secret generic feast-postgresql --from-literal=postgresql-password=password
-```
-
 Install Feast
 ```
 helm install feast-release feast-charts/feast
@@ -41,54 +32,43 @@ helm install feast-release feast-charts/feast
 
 This Feast chart comes with a [values.yaml](values.yaml) that allows for configuration and customization of all sub-charts.
 
-In order to modify the default configuration of Feast Core and Feast Serving, please use the `application-override.yaml` key in the `values.yaml` file in this chart. A code snippet example
+In order to modify the default configuration of Feature Server, please use the `application-override.yaml` key in the `values.yaml` file in this chart. A code snippet example
 ```
-feast-core
- application-override.yaml:
-    enabled: true
-    spring:
-        datasource:
-          driverClassName: org.postgresql.Driver
-          url: jdbc:postgresql://postgres-prod-postgresql.default.svc.cluster.local:5432/feast
-          username: postgres
-          password: <password>
+feature-server:
+    application-override.yaml:
+        enabled: true
+        feast:
+            active_store: online
+            stores:
+            - name: online
+              type: REDIS
+              config:
+                host: localhost
+                port: 6379
+
 ```
 
-For the default configuration of these two services, please see the [Feast Core configuration](https://github.com/feast-dev/feast-java/blob/master/core/src/main/resources/application.yml) and [Feast Serving Configuration](https://github.com/feast-dev/feast-java/blob/master/serving/src/main/resources/application.yml).
+For the default configuration, please see the [Feature Server Configuration](https://github.com/feast-dev/feast-java/blob/master/serving/src/main/resources/application.yml).
 
-For more details, please see: https://docs.feast.dev/v/master/getting-started/deploying-feast/kubernetes
+For more details, please see: https://docs.feast.dev/how-to-guides/running-feast-in-production
 
-## Chart Requirements
+## Requirements
 
 | Repository | Name | Version |
 |------------|------|---------|
-|  | feast-jobservice | 0.9.2 |
-|  | feast-jupyter | 0.9.2 |
-| https://charts.bitnami.com/bitnami/ | kafka | 11.8.8 |
-| https://charts.helm.sh/stable | postgresql | 8.6.1 |
 | https://charts.helm.sh/stable | redis | 10.5.6 |
-| https://feast-helm-charts.storage.googleapis.com | feast-core | 0.25.0 |
-| https://feast-helm-charts.storage.googleapis.com | feast-serving | 0.25.0 |
+| https://feast-helm-charts.storage.googleapis.com | feature-server(feature-server) | 0.15.0 |
+| https://feast-helm-charts.storage.googleapis.com | transformation-service(transformation-service) | 0.15.0 |
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| feast-core.enabled | bool | `true` | Flag to install Feast Core |
-| feast-core.image.repository | string | `"gcr.io/kf-feast/feast-core"` |  |
-| feast-core.image.tag | string | `"develop"` |  |
-| feast-core.postgresql.existingSecret | string | `"feast-postgresql"` | Kubernetes secrets that contains the postgresql password |
-| feast-jobservice.enabled | bool | `true` | Flag to install Feast Job Service |
-| feast-jobservice.image.repository | string | `"gcr.io/kf-feast/feast-jobservice"` |  |
-| feast-jobservice.image.tag | string | `"develop"` |  |
-| feast-jupyter.enabled | bool | `true` | Flag to install Feast Jupyter Notebook with SDK |
-| feast-jupyter.image.repository | string | `"gcr.io/kf-feast/feast-jupyter"` |  |
-| feast-jupyter.image.tag | string | `"develop"` |  |
-| feast-serving.enabled | bool | `true` |  |
-| feast-serving.image.repository | string | `"gcr.io/kf-feast/feast-serving"` |  |
-| feast-serving.image.tag | string | `"develop"` |  |
-| kafka.enabled | bool | `true` | Flag to install Kafka |
-| postgresql.enabled | bool | `true` | Flag to install Postgresql |
-| postgresql.existingSecret | string | `"feast-postgresql"` | Kubernetes secrets that contains the postgresql password |
-| redis.enabled | bool | `true` | Flag to install Redis |
+| feature-server.enabled | bool | `true` |  |
+| global.project | string | `"default"` | Project from feature_store.yaml |
+| global.registry | object | `{"cache_ttl_seconds":0,"path":"gs://path/to/registry.db"}` | Information about registry managed by Feast Python SDK (must be in sync with feature_store.yaml) |
+| global.registry.cache_ttl_seconds | int | `0` | Registry cache (in memory) will be refreshed on this interval |
+| global.registry.path | string | `"gs://path/to/registry.db"` | Path to the registry file managed by Feast Python SDK |
+| redis.enabled | bool | `false` | Flag to install Redis |
 | redis.usePassword | bool | `false` | Disable redis password |
+| transformation-service.enabled | bool | `true` |  |

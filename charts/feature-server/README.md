@@ -1,29 +1,23 @@
-feast-serving
-=============
-Feast Serving: Online feature serving service for Feast
+# feature-server
 
-Current chart version is `0.9.2`
+![Version: 0.100.4](https://img.shields.io/badge/Version-0.100.4-informational?style=flat-square) ![AppVersion: v0.15.0](https://img.shields.io/badge/AppVersion-v0.15.0-informational?style=flat-square)
 
-Source code can be found [here](https://github.com/feast-dev/feast-java)
+Feast Feature Server: Online feature serving service for Feast
 
+**Homepage:** <https://github.com/feast-dev/feast>
 
-
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| "application-generated.yaml".enabled | bool | `true` | Flag to include Helm generated configuration for http port, Feast Core host, Redis store and job store. This is useful for deployment that uses default configuration for Redis. Please set `application-override.yaml` to override this configuration. |
-| "application-override.yaml" | object | `{"enabled":true}` | Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/serving/src/main/resources/application.yml). Will be created as a ConfigMap. `application-override.yaml` has a higher precedence than `application-secret.yaml` |
-| "application-secret.yaml" | object | `{"enabled":true}` | Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/serving/src/main/resources/application.yml). Will be created as a Secret. `application-override.yaml` has a higher precedence than `application-secret.yaml`. It is recommended to either set `application-override.yaml` or `application-secret.yaml` only to simplify config management. |
-| "application.yaml".enabled | bool | `true` | Flag to include the default [configuration](https://github.com/feast-dev/feast/blob/master/serving/src/main/resources/application.yml). Please set `application-override.yaml` to override this configuration. |
+| "application-generated.yaml".enabled | bool | `true` | Flag to include Helm generated configuration. Please set `application-override.yaml` to override this configuration. |
+| "application-override.yaml" | object | `{"enabled":true}` | Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Will be created as a ConfigMap. `application-override.yaml` has a higher precedence than `application-secret.yaml` |
+| "application-secret.yaml" | object | `{"enabled":true}` | Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Will be created as a Secret. `application-override.yaml` has a higher precedence than `application-secret.yaml`. It is recommended to either set `application-override.yaml` or `application-secret.yaml` only to simplify config management. |
+| "application.yaml".enabled | bool | `true` | Flag to include the default [configuration](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Please set `application-override.yaml` to override this configuration. |
 | envOverrides | object | `{}` | Extra environment variables to set |
-| gcpProjectId | string | `""` | Project ID to use when using Google Cloud services such as BigQuery, Cloud Storage and Dataflow |
-| gcpServiceAccount.enabled | bool | `false` | Flag to use [service account](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) JSON key Cloud service account JSON key file. |
-| gcpServiceAccount.existingSecret.key | string | `"credentials.json"` | Key in the secret data (file name of the service account) |
-| gcpServiceAccount.existingSecret.name | string | `"feast-gcp-service-account"` | Name of the existing secret containing the service account |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| image.repository | string | `"gcr.io/kf-feast/feast-serving"` | Docker image repository |
-| image.tag | string | `"develop"` | Image tag |
+| image.repository | string | `"feastdev/feature-server-java"` | Docker image for Feature Server repository |
+| image.tag | string | `"latest"` | Image tag |
 | ingress.grpc.annotations | object | `{}` | Extra annotations for the ingress |
 | ingress.grpc.auth.enabled | bool | `false` | Flag to enable auth |
 | ingress.grpc.class | string | `"nginx"` | Which ingress controller to use |
@@ -52,7 +46,6 @@ Source code can be found [here](https://github.com/feast-dev/feast-java)
 | logType | string | `"Console"` | Log format, either `JSON` or `Console` |
 | nodeSelector | object | `{}` | Node labels for pod assignment |
 | podLabels | object | `{}` | Labels to be added to Feast Serving pods |
-| prometheus.enabled | bool | `true` | Flag to enable scraping of Feast Core metrics |
 | readinessProbe.enabled | bool | `true` | Flag to enabled the probe |
 | readinessProbe.failureThreshold | int | `5` | Min consecutive failures for the probe to be considered failed |
 | readinessProbe.initialDelaySeconds | int | `15` | Delay before the probe is initiated |
@@ -61,7 +54,7 @@ Source code can be found [here](https://github.com/feast-dev/feast-java)
 | readinessProbe.timeoutSeconds | int | `10` | When the probe times out |
 | replicaCount | int | `1` | Number of pods that will be created |
 | resources | object | `{}` | CPU/memory [resource requests/limit](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container) |
-| secrets | list | `[]` | List of Kubernetes secrets to be mounted on Feast Core pods. These secrets will be mounted on /etc/secrets/<secret name>. |
+| secrets | list | `[]` | List of Kubernetes secrets to be mounted. These secrets will be mounted on /etc/secrets/<secret name>. |
 | service.grpc.nodePort | string | `nil` | Port number that each cluster node will listen to |
 | service.grpc.port | int | `6566` | Service port for GRPC requests |
 | service.grpc.targetPort | int | `6566` | Container port serving GRPC requests |
@@ -69,3 +62,8 @@ Source code can be found [here](https://github.com/feast-dev/feast-java)
 | service.http.port | int | `80` | Service port for HTTP requests |
 | service.http.targetPort | int | `8080` | Container port serving HTTP requests and Prometheus metrics |
 | service.type | string | `"ClusterIP"` | Kubernetes service type |
+| transformationService.host | string | `""` |  |
+| transformationService.port | int | `6566` |  |
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)

@@ -2,41 +2,34 @@
 replicaCount: 1
 
 image:
-  # image.repository -- Docker image repository
-  repository: gcr.io/kf-feast/feast-serving
+  # image.repository -- Docker image for Feature Server repository
+  repository: feastdev/feature-server-java
   # image.tag -- Image tag
-  tag: develop
+  tag: latest
   # image.pullPolicy -- Image pull policy
   pullPolicy: IfNotPresent
 
+
+transformationService:
+  host: ""
+  port: 6566
+
+
 application.yaml:
-  # "application.yaml".enabled -- Flag to include the default [configuration](https://github.com/feast-dev/feast/blob/master/serving/src/main/resources/application.yml). Please set `application-override.yaml` to override this configuration.
+  # "application.yaml".enabled -- Flag to include the default [configuration](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Please set `application-override.yaml` to override this configuration.
   enabled: true
 
 application-generated.yaml:
-  # "application-generated.yaml".enabled -- Flag to include Helm generated configuration for http port, Feast Core host, Redis store and job store. This is useful for deployment that uses default configuration for Redis. Please set `application-override.yaml` to override this configuration.
+  # "application-generated.yaml".enabled -- Flag to include Helm generated configuration. Please set `application-override.yaml` to override this configuration.
   enabled: true
 
-# "application-secret.yaml" -- Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/serving/src/main/resources/application.yml). Will be created as a Secret. `application-override.yaml` has a higher precedence than `application-secret.yaml`. It is recommended to either set `application-override.yaml` or `application-secret.yaml` only to simplify config management.
+# "application-secret.yaml" -- Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Will be created as a Secret. `application-override.yaml` has a higher precedence than `application-secret.yaml`. It is recommended to either set `application-override.yaml` or `application-secret.yaml` only to simplify config management.
 application-secret.yaml:
   enabled: true
 
-# "application-override.yaml" -- Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/serving/src/main/resources/application.yml). Will be created as a ConfigMap. `application-override.yaml` has a higher precedence than `application-secret.yaml`
+# "application-override.yaml" -- Configuration to override the default [application.yaml](https://github.com/feast-dev/feast/blob/master/java/serving/src/main/resources/application.yml). Will be created as a ConfigMap. `application-override.yaml` has a higher precedence than `application-secret.yaml`
 application-override.yaml:
   enabled: true
-
-gcpServiceAccount:
-  # gcpServiceAccount.enabled -- Flag to use [service account](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) JSON key
-  # Cloud service account JSON key file.
-  enabled: false
-  existingSecret:
-    # gcpServiceAccount.existingSecret.name -- Name of the existing secret containing the service account
-    name: feast-gcp-service-account
-    # gcpServiceAccount.existingSecret.key -- Key in the secret data (file name of the service account)
-    key: credentials.json
-
-# gcpProjectId -- Project ID to use when using Google Cloud services such as BigQuery, Cloud Storage and Dataflow
-gcpProjectId: ""
 
 # javaOpts -- [JVM options](https://docs.oracle.com/cd/E22289_01/html/821-1274/configuring-the-default-jvm-and-java-arguments.html). For better performance, it is advised to set the min and max heap: <br> `-Xms2048m -Xmx2048m`
 javaOpts:
@@ -46,9 +39,6 @@ logType: Console
 # logLevel -- Default log level, use either one of `DEBUG`, `INFO`, `WARN` or `ERROR`
 logLevel: WARN
 
-prometheus:
-  # prometheus.enabled -- Flag to enable scraping of Feast Core metrics
-  enabled: true
 
 livenessProbe:
   # livenessProbe.enabled -- Flag to enabled the probe
@@ -147,7 +137,7 @@ nodeSelector: {}
 # envOverrides -- Extra environment variables to set
 envOverrides: {}
 
-# secrets -- List of Kubernetes secrets to be mounted on Feast Core pods. These secrets will be mounted on /etc/secrets/<secret name>.
+# secrets -- List of Kubernetes secrets to be mounted. These secrets will be mounted on /etc/secrets/<secret name>.
 secrets: []
 
 # podLabels -- Labels to be added to Feast Serving pods
