@@ -1,46 +1,23 @@
-feast-core:
-  # feast-core.enabled -- Flag to install Feast Core
-  enabled: true
-  postgresql:
-    # feast-core.postgresql.existingSecret -- Kubernetes secrets that contains the postgresql password
-    existingSecret: feast-postgresql
-  image:
-    repository: gcr.io/kf-feast/feast-core
-    tag: develop
-
-feast-serving:
-  # feast-online-serving.enabled -- Flag to install Feast Online Serving
-  enabled: true
-  image:
-    repository: gcr.io/kf-feast/feast-serving
-    tag: develop
-
-feast-jupyter:
-  # feast-jupyter.enabled -- Flag to install Feast Jupyter Notebook with SDK
-  enabled: true
-  image:
-    repository: gcr.io/kf-feast/feast-jupyter
-    tag: develop
-
-feast-jobservice:
-  # feast-jobservice.enabled -- Flag to install Feast Job Service
-  image:
-    repository: gcr.io/kf-feast/feast-jobservice
-    tag: develop
+feature-server:
   enabled: true
 
-postgresql:
-  # postgresql.enabled -- Flag to install Postgresql
-  enabled: true
-  # postgresql.existingSecret -- Kubernetes secrets that contains the postgresql password
-  existingSecret: feast-postgresql
 
-kafka:
-  # kafka.enabled -- Flag to install Kafka
+transformation-service:
   enabled: true
 
 redis:
   # redis.enabled -- Flag to install Redis
-  enabled: true
+  enabled: false
   # redis.usePassword -- Disable redis password
   usePassword: false
+
+global:
+  # global.registry -- Information about registry managed by Feast Python SDK (must be in sync with feature_store.yaml)
+  registry:
+    # global.registry.path -- Path to the registry file managed by Feast Python SDK
+    path: gs://path/to/registry.db
+    # global.registry.cache_ttl_seconds -- Registry cache (in memory) will be refreshed on this interval
+    cache_ttl_seconds: 0
+
+  # global.project -- Project from feature_store.yaml
+  project: default
