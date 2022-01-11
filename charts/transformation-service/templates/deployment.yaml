@@ -34,6 +34,8 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        securityContext:
+          runAsUser: 2000
         ports:
         - name: grpc
           containerPort: {{ .Values.service.grpc.targetPort }}
